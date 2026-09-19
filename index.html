@@ -6,23 +6,24 @@
   <title>행운번호 | 로또 번호 생성기</title>
   <meta name="description" content="나만의 로또 6/45 행운 번호를 간편하게 생성하세요." />
   <style>
-    :root { --ink:#17202f; --muted:#6c7280; --paper:#fffdf9; --line:#e9e7e1; --accent:#f65745; --yellow:#f6c945; --blue:#4d9fe8; --green:#53bf82; --purple:#a175db; }
+    :root { --ink:#17202f; --muted:#6c7280; --paper:#fffdf9; --line:#e9e7e1; --accent:#f65745; --yellow:#f6c945; --blue:#4d9fe8; --green:#53bf82; --purple:#a175db; --surface:#fff; --surface-soft:#fafaf8; --tip:#fff6db; --tip-ink:#6f6040; --hero-a:#fff0cd; --hero-b:#e4f5ff; --page:#f7f6f1; }
+    html[data-theme="dark"] { --ink:#f4f6fb; --muted:#aab2c2; --line:#303a4c; --surface:#1d2737; --surface-soft:#253043; --tip:#3d3420; --tip-ink:#f0d88a; --hero-a:#352e2a; --hero-b:#1d303b; --page:#111927; }
     * { box-sizing:border-box; }
-    body { margin:0; min-height:100vh; font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Noto Sans KR", sans-serif; color:var(--ink); background:radial-gradient(circle at 8% 2%, #fff0cd 0, transparent 28rem), radial-gradient(circle at 95% 18%, #e4f5ff 0, transparent 28rem), #f7f6f1; }
+    body { margin:0; min-height:100vh; font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Noto Sans KR", sans-serif; color:var(--ink); background:radial-gradient(circle at 8% 2%, var(--hero-a) 0, transparent 28rem), radial-gradient(circle at 95% 18%, var(--hero-b) 0, transparent 28rem), var(--page); transition:background .25s,color .25s; }
     button { font:inherit; cursor:pointer; }
     .wrap { width:min(1080px, calc(100% - 40px)); margin:auto; }
     header { height:84px; display:flex; align-items:center; justify-content:space-between; }
     .brand { display:flex; align-items:center; gap:10px; font-size:20px; font-weight:850; letter-spacing:-.8px; }
     .logo { display:grid; place-items:center; width:33px; height:33px; border-radius:50%; background:var(--accent); color:#fff; font-size:17px; transform:rotate(-12deg); box-shadow:4px 4px 0 #17202f; }
-    .tag { font-size:13px; color:var(--muted); }
+    .header-right { display:flex; align-items:center; gap:14px; }.tag { font-size:13px; color:var(--muted); }.theme-toggle { display:flex; align-items:center; gap:7px; padding:8px 10px; border:1px solid var(--line); border-radius:999px; color:var(--ink); background:var(--surface); font-size:12px; font-weight:750; }
     main { padding:50px 0 64px; }
     .hero { text-align:center; margin-bottom:34px; }
-    .eyebrow { display:inline-flex; padding:7px 12px; border-radius:999px; background:#fff; color:var(--accent); font-weight:750; font-size:12px; box-shadow:0 3px 14px #1c2a3b10; }
+    .eyebrow { display:inline-flex; padding:7px 12px; border-radius:999px; background:var(--surface); color:var(--accent); font-weight:750; font-size:12px; box-shadow:0 3px 14px #1c2a3b10; }
     h1 { margin:16px 0 12px; font-size:clamp(34px, 5vw, 57px); line-height:1.1; letter-spacing:-3px; }
     h1 span { color:var(--accent); }
     .hero p { margin:0; color:var(--muted); font-size:16px; line-height:1.6; }
     .grid { display:grid; grid-template-columns: 1.48fr .82fr; gap:20px; align-items:start; }
-    .card { background:rgba(255,255,255,.88); border:1px solid #fff; border-radius:24px; box-shadow:0 14px 50px #25354a0b; }
+    .card { background:var(--surface); border:1px solid color-mix(in srgb, var(--surface) 65%, var(--line)); border-radius:24px; box-shadow:0 14px 50px #25354a16; }
     .generator { padding:30px; }
     .card-title { display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:23px; }
     .card-title h2 { margin:0; font-size:20px; letter-spacing:-1px; }
@@ -32,24 +33,24 @@
     .ball:hover { transform:translateY(-3px) rotate(4deg); }
     .blank { color:#a8a8a2; font-weight:650; font-size:15px; }
     .options { border-top:1px solid var(--line); padding-top:22px; display:grid; grid-template-columns:1fr 1fr; gap:12px; }
-    .option { position:relative; text-align:left; padding:16px; min-height:86px; border-radius:15px; border:1.5px solid var(--line); background:#fff; color:var(--ink); transition:.2s; }
+    .option { position:relative; text-align:left; padding:16px; min-height:86px; border-radius:15px; border:1.5px solid var(--line); background:var(--surface); color:var(--ink); transition:.2s; }
     .option strong { display:block; font-size:15px; margin-bottom:5px; }.option span { font-size:12px; color:var(--muted); }
-    .option.active { border-color:var(--accent); background:#fff7f5; }.option.active::after { content:"✓"; position:absolute; right:13px; top:13px; color:var(--accent); font-weight:800; }
+    .option.active { border-color:var(--accent); background:color-mix(in srgb, var(--accent) 8%, var(--surface)); }.option.active::after { content:"✓"; position:absolute; right:13px; top:13px; color:var(--accent); font-weight:800; }
     .actions { display:flex; gap:10px; margin-top:18px; }
     .primary { flex:1; padding:16px 18px; border:0; border-radius:14px; background:var(--ink); color:white; font-weight:800; font-size:16px; transition:.2s; }.primary:hover { background:var(--accent); transform:translateY(-1px); }
-    .secondary { padding:0 17px; border:1px solid var(--line); border-radius:14px; background:#fff; color:var(--ink); font-weight:700; }.secondary:hover { border-color:var(--ink); }
+    .secondary { padding:0 17px; border:1px solid var(--line); border-radius:14px; background:var(--surface); color:var(--ink); font-weight:700; }.secondary:hover { border-color:var(--ink); }
     .side { padding:26px; }
-    .tip { padding:17px; border-radius:16px; background:#fff6db; margin-bottom:23px; }.tip b { display:block; margin-bottom:6px; font-size:14px; }.tip p { margin:0; color:#6f6040; font-size:13px; line-height:1.55; }
+    .tip { padding:17px; border-radius:16px; background:var(--tip); margin-bottom:23px; }.tip b { display:block; margin-bottom:6px; font-size:14px; }.tip p { margin:0; color:var(--tip-ink); font-size:13px; line-height:1.55; }
     .history-head { display:flex; justify-content:space-between; align-items:center; }.history-head h3 { margin:0; font-size:16px; }.clear { background:none; border:0; padding:4px; color:var(--muted); font-size:12px; }.clear:hover { color:var(--accent); }
     #history { margin-top:12px; display:grid; gap:9px; }.empty { padding:19px 0 5px; text-align:center; color:#9b9b96; font-size:13px; }
-    .history-item { display:flex; align-items:center; justify-content:space-between; padding:10px; background:#fafaf8; border-radius:12px; }.mini-balls { display:flex; gap:4px; }.mini { width:22px; height:22px; border-radius:50%; display:grid; place-items:center; color:#fff; background:var(--ball); font-size:9px; font-weight:800; }.time { color:#a0a09c; font-size:10px; }
+    .history-item { display:flex; align-items:center; justify-content:space-between; padding:10px; background:var(--surface-soft); border-radius:12px; }.mini-balls { display:flex; gap:4px; }.mini { width:22px; height:22px; border-radius:50%; display:grid; place-items:center; color:#fff; background:var(--ball); font-size:9px; font-weight:800; }.time { color:var(--muted); font-size:10px; }
     .notice { max-width:680px; margin:24px auto 0; color:#92918b; font-size:12px; line-height:1.55; text-align:center; }
     @media (max-width:760px) { header { height:70px; }.tag { display:none; } main { padding-top:25px; }.grid { grid-template-columns:1fr; }.generator, .side { padding:22px; }.ball { width:45px; height:45px; font-size:17px; }.options { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <header><div class="brand"><div class="logo">✦</div>행운번호</div><div class="tag">오늘의 작은 설렘을 골라보세요</div></header>
+    <header><div class="brand"><div class="logo">✦</div>행운번호</div><div class="header-right"><div class="tag">오늘의 작은 설렘을 골라보세요</div><button class="theme-toggle" id="theme-toggle" aria-label="다크 모드로 전환"><span id="theme-icon">☾</span><span id="theme-text">다크 모드</span></button></div></header>
     <main>
       <section class="hero"><div class="eyebrow">LOTTO 6/45</div><h1>오늘, <span>행운</span>을 뽑아볼까요?</h1><p>1부터 45 사이의 숫자 6개를 정직하게 골라드려요.</p></section>
       <div class="grid">
@@ -75,6 +76,7 @@
     const colors = ['#f6c945','#4d9fe8','#f65745','#9b72d1','#53bf82'];
     let mode = 'auto', latest = [], selected = [];
     const $ = s => document.querySelector(s);
+    function setTheme(theme) { document.documentElement.dataset.theme=theme; localStorage.setItem('lucky-theme',theme); const dark=theme==='dark'; $('#theme-icon').textContent=dark?'☀':'☾'; $('#theme-text').textContent=dark?'화이트 모드':'다크 모드'; $('#theme-toggle').setAttribute('aria-label',dark?'화이트 모드로 전환':'다크 모드로 전환'); }
     const color = n => colors[Math.min(4, Math.floor((n-1)/10))];
     const ball = (n, small=false) => `<span class="${small?'mini':'ball'}" style="--ball:${color(n)}">${n}</span>`;
     function randomNumbers(amount=6, excluded=[]) { const pool = Array.from({length:45},(_,i)=>i+1).filter(n=>!excluded.includes(n)); return pool.sort(()=>Math.random()-.5).slice(0,amount).sort((a,b)=>a-b); }
@@ -86,6 +88,8 @@
     $('#generate').addEventListener('click',generate);
     $('#copy').addEventListener('click',async()=>{ if(!latest.length) return alert('먼저 번호를 생성해 주세요.'); await navigator.clipboard.writeText(latest.join(', ')); $('#copy').textContent='복사 완료!'; setTimeout(()=>$('#copy').textContent='복사',1300); });
     $('#clear').addEventListener('click',()=>{ localStorage.removeItem('lucky-history'); renderHistory(); });
+    $('#theme-toggle').addEventListener('click',()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'));
+    setTheme(localStorage.getItem('lucky-theme') || (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));
     renderHistory();
   </script>
 </body>
