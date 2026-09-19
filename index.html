@@ -37,7 +37,8 @@
     .option strong { display:block; font-size:15px; margin-bottom:5px; }.option span { font-size:12px; color:var(--muted); }
     .option.active { border-color:var(--accent); background:color-mix(in srgb, var(--accent) 8%, var(--surface)); }.option.active::after { content:"✓"; position:absolute; right:13px; top:13px; color:var(--accent); font-weight:800; }
     .actions { display:flex; gap:10px; margin-top:18px; }
-    .primary { flex:1; padding:16px 18px; border:0; border-radius:14px; background:var(--ink); color:white; font-weight:800; font-size:16px; transition:.2s; }.primary:hover { background:var(--accent); transform:translateY(-1px); }
+    .primary { flex:1; padding:16px 18px; border:0; border-radius:14px; background:#17202f; color:#fff; font-weight:800; font-size:16px; transition:.2s; }.primary:hover { background:var(--accent); transform:translateY(-1px); }
+    html[data-theme="dark"] .primary { background:var(--accent); color:#fff; }
     .secondary { padding:0 17px; border:1px solid var(--line); border-radius:14px; background:var(--surface); color:var(--ink); font-weight:700; }.secondary:hover { border-color:var(--ink); }
     .side { padding:26px; }
     .tip { padding:17px; border-radius:16px; background:var(--tip); margin-bottom:23px; }.tip b { display:block; margin-bottom:6px; font-size:14px; }.tip p { margin:0; color:var(--tip-ink); font-size:13px; line-height:1.55; }
