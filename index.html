@@ -584,6 +584,8 @@
         </div>
       </div>
     </div>
+  </div>
+
   <!-- 응원 메시지 토스트 -->
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
@@ -648,7 +650,7 @@
     const T = i => tx[lang][i];
     const get = () => JSON.parse(localStorage.getItem(key) || '[]');
     const put = x => localStorage.setItem(key, JSON.stringify(x));
-    const done = g => (g.done || []).length === 3 && (g.done || []).every(Boolean);
+    const done = g => Boolean(g.done?.[0] && g.done?.[1] && g.done?.[2]);
     const esc = x => String(x).replace(/[&<>'"]/g, c => ({
       '&': '&amp;',
       '<': '&lt;',
@@ -689,7 +691,7 @@
       }
 
       l.innerHTML = a.map(g => `
-        <article class="card ${done(g) ? 'done' : ''}" data-id="${g.id}" draggable="true">
+        <article class="card ${done(g) ? 'done' : ''}" data-id="${g.id}">
           <button class="more" data-more="${g.id}">⋮</button>
           <div class="menu" id="m${g.id}">
             <button data-edit="${g.id}">Edit</button>
@@ -697,7 +699,7 @@
             <button data-del="${g.id}">Delete</button>
           </div>
           <div class="meta">
-            <span class="drag-handle" title="${lang === 'ko' ? '드래그하여 순서 변경' : 'Drag to reorder'}">⠿</span>
+            <span class="drag-handle" draggable="true" title="${lang === 'ko' ? '드래그하여 순서 변경' : 'Drag to reorder'}">⠿</span>
             <span class="badge">${done(g) ? 'DONE' : 'OKR'}</span> ${g.startDate} – ${g.endDate}
           </div>
           <h2>${esc(g.objective)}</h2>
@@ -808,6 +810,8 @@
       }
 
       toast.textContent = msg;
+      toast.classList.remove('show');
+      void toast.offsetWidth;
       toast.classList.add('show');
 
       clearTimeout(toastTimer);
@@ -832,7 +836,7 @@
           render();
 
           if (isNowDone) {
-            let remaining = 3 - g.done.filter(Boolean).length;
+            let remaining = 3 - [0, 1, 2].filter(i => Boolean(g.done?.[i])).length;
             showCheer(remaining);
           }
         }
@@ -860,22 +864,35 @@
       }
     };
 
+    // 키보드 접근성 (Enter / Space로 KR 완료 토글)
+    $('#list').onkeydown = e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        let kr = e.target.closest('.kr');
+        if (kr) {
+          e.preventDefault();
+          kr.click();
+        }
+      }
+    };
+
     // 드래그 & 드롭 순서 변경 (Drag and Drop)
     let draggedCard = null;
 
     $('#list').ondragstart = e => {
-      let card = e.target.closest('.card');
-      if (!card) return;
-
-      // KR이나 더보기 버튼/메뉴 조작 시에는 드래그 방지
-      if (e.target.closest('.kr') || e.target.closest('.more') || e.target.closest('.menu')) {
+      let handle = e.target.closest('.drag-handle');
+      if (!handle) {
         e.preventDefault();
         return;
       }
+      let card = handle.closest('.card');
+      if (!card) return;
 
       draggedCard = card;
       e.dataTransfer.setData('text/plain', card.dataset.id);
       e.dataTransfer.effectAllowed = 'move';
+      if (e.dataTransfer.setDragImage) {
+        e.dataTransfer.setDragImage(card, 20, 20);
+      }
       setTimeout(() => card.classList.add('dragging'), 0);
     };
 
