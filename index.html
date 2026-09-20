@@ -36,7 +36,7 @@
     }
 
     .wrap {
-      width: min(1050px, calc(100% - 32px));
+      width: min(1280px, calc(100% - 32px));
       margin: auto;
     }
 
@@ -477,6 +477,302 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
+
+    /* 달력 및 메인 레이아웃 스타일 */
+    .main-layout {
+      display: grid;
+      grid-template-columns: 1fr 370px;
+      gap: 24px;
+      align-items: start;
+    }
+
+    @media (max-width: 960px) {
+      .main-layout {
+        grid-template-columns: 1fr;
+      }
+      .calendar-aside {
+        position: static !important;
+        margin-top: 16px;
+      }
+    }
+
+    .calendar-aside {
+      position: sticky;
+      top: 20px;
+    }
+
+    .cal-card {
+      background: var(--c);
+      border: 1px solid var(--l);
+      border-radius: 10px;
+      padding: 18px;
+    }
+
+    .cal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .cal-title-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .cal-title {
+      margin: 0;
+      font-size: 16px;
+      font-weight: bold;
+    }
+
+    .cal-today-btn {
+      padding: 3px 8px;
+      font-size: 11px;
+      font-weight: bold;
+      border-radius: 4px;
+    }
+
+    .cal-nav {
+      display: flex;
+      gap: 4px;
+    }
+
+    .cal-btn {
+      padding: 4px 8px;
+      font-size: 12px;
+      line-height: 1;
+      border-radius: 4px;
+    }
+
+    .cal-weekdays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      text-align: center;
+      font-size: 11px;
+      font-weight: bold;
+      color: var(--s);
+      margin-bottom: 8px;
+    }
+
+    .cal-weekday:first-child {
+      color: #ea4335;
+    }
+
+    .cal-weekday:last-child {
+      color: var(--b);
+    }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 4px;
+    }
+
+    .cal-day {
+      aspect-ratio: 1;
+      border-radius: 6px;
+      border: 1px solid transparent;
+      padding: 4px 2px 2px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      cursor: pointer;
+      user-select: none;
+      font-size: 12px;
+      position: relative;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+    }
+
+    .cal-day:hover {
+      background: var(--soft);
+    }
+
+    .cal-day.other-month {
+      opacity: 0.35;
+    }
+
+    .cal-day.today .cal-day-num {
+      background: var(--b);
+      color: #fff;
+      border-radius: 50%;
+      font-weight: bold;
+    }
+
+    .cal-day.selected {
+      border-color: var(--b);
+      background: var(--soft);
+      font-weight: bold;
+    }
+
+    .cal-day.in-hover-range {
+      background: var(--soft);
+      border-color: var(--b);
+    }
+
+    .cal-day-num {
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+    }
+
+    .cal-day-dots {
+      display: flex;
+      gap: 2px;
+      margin-top: 3px;
+      min-height: 5px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cal-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+    }
+
+    .cal-dot.active {
+      background: var(--b);
+    }
+
+    .cal-dot.done {
+      background: #34a853;
+    }
+
+    .cal-selected-info {
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--l);
+    }
+
+    .cal-selected-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 13px;
+    }
+
+    .cal-selected-date-text {
+      font-weight: bold;
+      color: var(--i);
+    }
+
+    .cal-selected-count {
+      font-size: 11px;
+      color: var(--s);
+      background: var(--soft);
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-weight: 500;
+    }
+
+    .cal-events-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+
+    .cal-event-item {
+      padding: 9px 11px;
+      border: 1px solid var(--l);
+      border-radius: 6px;
+      background: var(--bg);
+      cursor: pointer;
+      transition: border-color 0.15s, transform 0.1s, box-shadow 0.15s;
+    }
+
+    .cal-event-item:hover {
+      border-color: var(--b);
+      box-shadow: 0 2px 6px rgba(26, 115, 232, 0.12);
+      transform: translateY(-1px);
+    }
+
+    .cal-event-item.done {
+      opacity: 0.7;
+    }
+
+    .cal-event-title {
+      font-size: 13px;
+      font-weight: bold;
+      margin-bottom: 4px;
+      line-height: 1.3;
+      word-break: break-word;
+    }
+
+    .cal-event-meta {
+      font-size: 11px;
+      color: var(--s);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cal-event-badge {
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-size: 10px;
+      font-weight: bold;
+    }
+
+    .cal-event-badge.active {
+      background: var(--soft);
+      color: var(--b);
+    }
+
+    .cal-event-badge.done {
+      background: #e6f4ea;
+      color: #137333;
+    }
+
+    html[data-theme="dark"] .cal-event-badge.done {
+      background: #1e3a29;
+      color: #81c995;
+    }
+
+    .cal-event-empty {
+      text-align: center;
+      color: var(--s);
+      font-size: 12px;
+      padding: 16px 8px;
+    }
+
+    .cal-add-btn {
+      width: 100%;
+      margin-top: 8px;
+      padding: 7px;
+      font-size: 12px;
+      border: 1px dashed var(--l);
+      background: transparent;
+      color: var(--b);
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    .cal-add-btn:hover {
+      background: var(--soft);
+      border-color: var(--b);
+    }
+
+    @keyframes cardPulse {
+      0% { box-shadow: 0 0 0 0 rgba(26, 115, 232, 0.7); transform: scale(1); }
+      40% { box-shadow: 0 0 0 8px rgba(26, 115, 232, 0.2); transform: scale(1.01); }
+      100% { box-shadow: 0 0 0 0 rgba(26, 115, 232, 0); transform: scale(1); }
+    }
+
+    .card.highlighted {
+      animation: cardPulse 1.2s ease-out;
+      border-color: var(--b) !important;
+    }
   </style>
 </head>
 <body>
@@ -503,12 +799,42 @@
       <button class="btn" id="new">＋ <span id="newt">새 OKR 만들기</span></button>
     </div>
 
-    <div class="filters">
-      <button class="tool filter on" data-f="all" id="all">전체 보기</button>
-      <button class="tool filter" data-f="active" id="active">미완료 보기</button>
-    </div>
+    <div class="main-layout">
+      <div class="main-content">
+        <div class="filters">
+          <button class="tool filter on" data-f="all" id="all">전체 보기</button>
+          <button class="tool filter" data-f="active" id="active">미완료 보기</button>
+        </div>
 
-    <section class="list" id="list"></section>
+        <section class="list" id="list"></section>
+      </div>
+
+      <aside class="calendar-aside">
+        <div class="cal-card">
+          <div class="cal-header">
+            <div class="cal-title-wrap">
+              <h3 class="cal-title" id="cal-month-label"></h3>
+              <button class="tool cal-today-btn" id="cal-today" type="button">오늘</button>
+            </div>
+            <div class="cal-nav">
+              <button class="tool cal-btn" id="cal-prev" type="button" aria-label="이전 달">&lt;</button>
+              <button class="tool cal-btn" id="cal-next" type="button" aria-label="다음 달">&gt;</button>
+            </div>
+          </div>
+          <div class="cal-weekdays" id="cal-weekdays"></div>
+          <div class="cal-grid" id="cal-grid"></div>
+
+          <div class="cal-selected-info">
+            <div class="cal-selected-header">
+              <span class="cal-selected-date-text" id="cal-selected-date-text"></span>
+              <span class="cal-selected-count" id="cal-selected-count"></span>
+            </div>
+            <div class="cal-events-list" id="cal-events-list"></div>
+            <button class="cal-add-btn" id="cal-add-date-btn" type="button">＋ 이 날짜로 새 OKR 만들기</button>
+          </div>
+        </div>
+      </aside>
+    </div>
 
     <p class="notice" id="notice">모든 데이터는 현재 사용 중인 기기에 저장되며, JSON 파일로 다른 기기에 옮길 수 있습니다.</p>
   </main>
@@ -659,6 +985,173 @@
       '"': '&quot;'
     }[c]));
 
+    // 달력 상태 및 날짜 헬퍼
+    let calDate = new Date();
+    let selectedDate = new Date().toLocaleDateString('sv');
+    let hoveredOkrId = null;
+
+    const isGoalOnDate = (g, dateStr) => {
+      if (!g.startDate || !g.endDate) return false;
+      let s = g.startDate <= g.endDate ? g.startDate : g.endDate;
+      let e = g.startDate <= g.endDate ? g.endDate : g.startDate;
+      return s <= dateStr && dateStr <= e;
+    };
+
+    function renderCalendar() {
+      let year = calDate.getFullYear();
+      let month = calDate.getMonth();
+      let allGoals = get();
+
+      let monthNames = lang === 'ko'
+        ? ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월']
+        : ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+      $('#cal-month-label').textContent = lang === 'ko' ? `${year}년 ${monthNames[month]}` : `${monthNames[month]} ${year}`;
+      $('#cal-today').textContent = lang === 'ko' ? '오늘' : 'Today';
+      $('#cal-add-date-btn').textContent = lang === 'ko' ? '＋ 이 날짜로 목표 만들기' : '＋ Create goal for this date';
+
+      let weekdays = lang === 'ko' ? ['일', '월', '화', '수', '목', '금', '토'] : ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      $('#cal-weekdays').innerHTML = weekdays.map(w => `<div class="cal-weekday">${w}</div>`).join('');
+
+      let firstDayIndex = new Date(year, month, 1).getDay();
+      let lastDate = new Date(year, month + 1, 0).getDate();
+      let prevLastDate = new Date(year, month, 0).getDate();
+      let todayStr = new Date().toLocaleDateString('sv');
+
+      let hoveredGoal = hoveredOkrId ? allGoals.find(x => String(x.id) === String(hoveredOkrId)) : null;
+      let html = '';
+
+      const toDateStr = (y, m, d) => `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+
+      // 이전 달 날짜 채우기
+      for (let x = firstDayIndex; x > 0; x--) {
+        let d = prevLastDate - x + 1;
+        let prevM = month === 0 ? 11 : month - 1;
+        let prevY = month === 0 ? year - 1 : year;
+        let dateStr = toDateStr(prevY, prevM, d);
+        html += renderDayCell(dateStr, d, true, todayStr, allGoals, hoveredGoal);
+      }
+
+      // 이번 달 날짜 채우기
+      for (let d = 1; d <= lastDate; d++) {
+        let dateStr = toDateStr(year, month, d);
+        html += renderDayCell(dateStr, d, false, todayStr, allGoals, hoveredGoal);
+      }
+
+      // 다음 달 날짜 채우기 (35 또는 42 그리드 유지)
+      let totalCells = firstDayIndex + lastDate;
+      let targetTotal = totalCells <= 35 ? 35 : 42;
+      let nextCount = targetTotal - totalCells;
+      for (let d = 1; d <= nextCount; d++) {
+        let nextM = month === 11 ? 0 : month + 1;
+        let nextY = month === 11 ? year + 1 : year;
+        let dateStr = toDateStr(nextY, nextM, d);
+        html += renderDayCell(dateStr, d, true, todayStr, allGoals, hoveredGoal);
+      }
+
+      $('#cal-grid').innerHTML = html;
+      renderSelectedDateEvents();
+    }
+
+    function renderDayCell(dateStr, dayNum, isOtherMonth, todayStr, allGoals, hoveredGoal) {
+      let isToday = dateStr === todayStr;
+      let isSelected = dateStr === selectedDate;
+
+      let goalsOnDay = allGoals.filter(g => isGoalOnDate(g, dateStr));
+      let hasEvents = goalsOnDay.length > 0;
+
+      let inHoverRange = false;
+      if (hoveredGoal && isGoalOnDate(hoveredGoal, dateStr)) {
+        inHoverRange = true;
+      }
+
+      let dotsHtml = '';
+      if (hasEvents) {
+        let activeCount = goalsOnDay.filter(g => !done(g)).length;
+        let doneCount = goalsOnDay.filter(g => done(g)).length;
+
+        let dots = [];
+        if (activeCount > 0) dots.push('<span class="cal-dot active"></span>');
+        if (doneCount > 0) dots.push('<span class="cal-dot done"></span>');
+        if (goalsOnDay.length > 2 && dots.length < 3) dots.push('<span class="cal-dot active"></span>');
+
+        dotsHtml = `<div class="cal-day-dots">${dots.join('')}</div>`;
+      }
+
+      let classes = ['cal-day'];
+      if (isOtherMonth) classes.push('other-month');
+      if (isToday) classes.push('today');
+      if (isSelected) classes.push('selected');
+      if (hasEvents) classes.push('has-events');
+      if (inHoverRange) classes.push('in-hover-range');
+
+      return `
+        <div class="${classes.join(' ')}" data-date="${dateStr}" title="${goalsOnDay.length ? goalsOnDay.length + (lang === 'ko' ? '개의 목표' : ' OKRs') : ''}">
+          <span class="cal-day-num">${dayNum}</span>
+          ${dotsHtml}
+        </div>
+      `;
+    }
+
+    function renderSelectedDateEvents() {
+      let allGoals = get();
+      let goalsOnDay = allGoals.filter(g => isGoalOnDate(g, selectedDate));
+
+      let [y, m, d] = selectedDate.split('-').map(Number);
+      let todayStr = new Date().toLocaleDateString('sv');
+      let isToday = selectedDate === todayStr;
+
+      let dateTitle = '';
+      if (lang === 'ko') {
+        dateTitle = `${m}월 ${d}일` + (isToday ? ' (오늘)' : '');
+      } else {
+        let mNamesShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        dateTitle = `${mNamesShort[m - 1]} ${d}` + (isToday ? ' (Today)' : '');
+      }
+
+      $('#cal-selected-date-text').textContent = dateTitle;
+      $('#cal-selected-count').textContent = lang === 'ko'
+        ? `${goalsOnDay.length}개의 목표`
+        : `${goalsOnDay.length} ${goalsOnDay.length === 1 ? 'goal' : 'goals'}`;
+
+      let listEl = $('#cal-events-list');
+      if (!goalsOnDay.length) {
+        listEl.innerHTML = `<div class="cal-event-empty">${lang === 'ko' ? '이 날짜에 진행 중인 목표가 없습니다.' : 'No goals scheduled for this date.'}</div>`;
+        return;
+      }
+
+      listEl.innerHTML = goalsOnDay.map(g => {
+        let isDone = done(g);
+        let completedKrCount = [0, 1, 2].filter(i => Boolean(g.done?.[i])).length;
+        let badgeText = isDone
+          ? (lang === 'ko' ? '✓ 완료' : '✓ Done')
+          : (lang === 'ko' ? `KR ${completedKrCount}/3 완료` : `KR ${completedKrCount}/3 Done`);
+
+        return `
+          <div class="cal-event-item ${isDone ? 'done' : ''}" data-goto-id="${g.id}" title="${lang === 'ko' ? '클릭하여 해당 OKR 카드로 이동' : 'Click to jump to this OKR card'}">
+            <div class="cal-event-title">${esc(g.objective)}</div>
+            <div class="cal-event-meta">
+              <span>${g.startDate} ~ ${g.endDate}</span>
+              <span class="cal-event-badge ${isDone ? 'done' : 'active'}">${badgeText}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function updateCalendarHover() {
+      let allGoals = get();
+      let hoveredGoal = hoveredOkrId ? allGoals.find(x => String(x.id) === String(hoveredOkrId)) : null;
+      document.querySelectorAll('.cal-day').forEach(cell => {
+        let dateStr = cell.dataset.date;
+        if (hoveredGoal && isGoalOnDate(hoveredGoal, dateStr)) {
+          cell.classList.add('in-hover-range');
+        } else {
+          cell.classList.remove('in-hover-range');
+        }
+      });
+    }
+
     function words() {
       ['title', 'desc', 'newt', 'all', 'active', 'notice', 'period', 'obj', 'krlabel', 'motlabel'].forEach((id, i) => {
         $('#' + id).textContent = T(i);
@@ -687,6 +1180,7 @@
             <h2>✦ ${lang === 'ko' ? '첫 번째 목표를 만들어 보세요' : 'Create your first goal'}</h2>
             <button class="btn" data-new>${T(2)}</button>
           </div>`;
+        renderCalendar();
         return;
       }
 
@@ -717,13 +1211,14 @@
           <div class="mot">Why · ${esc(g.motivation)}</div>
         </article>
       `).join('');
+      renderCalendar();
     }
 
-    function open(g, copy) {
+    function open(g, copy, defaultDate) {
       let f = $('#form');
       f.reset();
       f.id.value = copy ? '' : g?.id || '';
-      let today = new Date().toLocaleDateString('sv');
+      let today = defaultDate || new Date().toLocaleDateString('sv');
       f.startDate.value = g ? g.startDate : today;
       f.endDate.value = g ? g.endDate : today;
       if (g) {
@@ -948,6 +1443,75 @@
       document.querySelectorAll('.filter').forEach(x => x.classList.toggle('on', x.dataset.f === filter));
       render();
     };
+
+    // 달력 네비게이션 및 상호작용
+    $('#cal-prev').onclick = () => {
+      calDate.setMonth(calDate.getMonth() - 1);
+      renderCalendar();
+    };
+
+    $('#cal-next').onclick = () => {
+      calDate.setMonth(calDate.getMonth() + 1);
+      renderCalendar();
+    };
+
+    $('#cal-today').onclick = () => {
+      calDate = new Date();
+      selectedDate = new Date().toLocaleDateString('sv');
+      renderCalendar();
+    };
+
+    $('#cal-grid').onclick = e => {
+      let cell = e.target.closest('.cal-day');
+      if (!cell || !cell.dataset.date) return;
+      selectedDate = cell.dataset.date;
+      let [y, m] = selectedDate.split('-').map(Number);
+      if (calDate.getFullYear() !== y || calDate.getMonth() !== m - 1) {
+        calDate = new Date(y, m - 1, 1);
+      }
+      renderCalendar();
+    };
+
+    $('#cal-add-date-btn').onclick = () => {
+      open(null, false, selectedDate);
+    };
+
+    $('#cal-events-list').onclick = e => {
+      let item = e.target.closest('[data-goto-id]');
+      if (!item) return;
+      let id = item.dataset.gotoId;
+      let card = document.querySelector(`.card[data-id="${id}"]`);
+      if (!card) {
+        filter = 'all';
+        document.querySelectorAll('.filter').forEach(x => x.classList.toggle('on', x.dataset.f === 'all'));
+        render();
+        card = document.querySelector(`.card[data-id="${id}"]`);
+      }
+      if (card) {
+        card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        card.classList.remove('highlighted');
+        void card.offsetWidth;
+        card.classList.add('highlighted');
+        setTimeout(() => card.classList.remove('highlighted'), 1500);
+      }
+    };
+
+    // OKR 카드 호버 시 달력 날짜 하이라이트
+    $('#list').addEventListener('mouseover', e => {
+      let card = e.target.closest('.card');
+      let newId = card ? card.dataset.id : null;
+      if (newId !== hoveredOkrId) {
+        hoveredOkrId = newId;
+        updateCalendarHover();
+      }
+    });
+
+    $('#list').addEventListener('mouseleave', () => {
+      if (hoveredOkrId) {
+        hoveredOkrId = null;
+        updateCalendarHover();
+      }
+    });
 
     // 배경화면 모달 열기
     $('#wall').onclick = () => {
