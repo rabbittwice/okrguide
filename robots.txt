@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rabbittwice.github.io/okrguide/sitemap.xml
