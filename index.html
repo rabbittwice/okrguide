@@ -865,9 +865,9 @@
     };
 
     // 배경화면 PNG 다운로드
-    $('#down').onclick = () => {
+    $('#down').onclick = async () => {
       let ids = [...document.querySelectorAll('#picks input:checked')].map(x => x.value);
-      if (!ids.length || ids.length > 5) return alert('1~5개를 선택해 주세요.');
+      if (!ids.length || ids.length > 5) return alert(lang === 'ko' ? '1~5개를 선택해 주세요.' : 'Please select 1 to 5 OKRs.');
 
       let a = get().filter(g => ids.includes(String(g.id)));
       let c = document.createElement('canvas');
@@ -910,12 +910,55 @@
         x.fillText(g.krs.map((k, n) => 'KR' + (n + 1) + ': ' + k).join('  ·  ').slice(0, 130), 140, y + 96);
       });
 
-      let l = document.createElement('a');
-      l.href = c.toDataURL();
       let d = new Date();
       let ds = [d.getFullYear(), String(d.getMonth() + 1).padStart(2, '0'), String(d.getDate()).padStart(2, '0')].join('-');
-      l.download = ds + '_OKR.png';
+      let filename = ds + '_OKR.png';
+
+      // 1. Canvas to Blob 변환
+      let blob = await new Promise(resolve => {
+        if (c.toBlob) {
+          c.toBlob(resolve, 'image/png');
+        } else {
+          let binStr = atob(c.toDataURL('image/png').split(',')[1]);
+          let len = binStr.length, arr = new Uint8Array(len);
+          for (let i = 0; i < len; i++) arr[i] = binStr.charCodeAt(i);
+          resolve(new Blob([arr], { type: 'image/png' }));
+        }
+      });
+
+      if (!blob) {
+        alert(lang === 'ko' ? '이미지 생성에 실패했습니다.' : 'Failed to generate image.');
+        return;
+      }
+
+      // 2. 모바일 Web Share API 지원 확인 (iOS Safari, Android Chrome 등 사진 저장 및 공유)
+      let isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+      if (isMobile && navigator.canShare) {
+        try {
+          let file = new File([blob], filename, { type: 'image/png' });
+          if (navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              files: [file],
+              title: 'MY OKR'
+            });
+            $('#picker').classList.remove('open');
+            return;
+          }
+        } catch (err) {
+          if (err.name === 'AbortError') return;
+        }
+      }
+
+      // 3. 데스크톱 및 일반 브라우저 다운로드 (Blob URL + <a> 클릭)
+      let u = URL.createObjectURL(blob);
+      let l = document.createElement('a');
+      l.href = u;
+      l.download = filename;
+      l.target = '_blank';
+      document.body.appendChild(l);
       l.click();
+      document.body.removeChild(l);
+      setTimeout(() => URL.revokeObjectURL(u), 10000);
       $('#picker').classList.remove('open');
     };
 
@@ -928,8 +971,10 @@
       let l = document.createElement('a');
       l.href = u;
       l.download = ds + '_OKR_backup.json';
+      document.body.appendChild(l);
       l.click();
-      URL.revokeObjectURL(u);
+      document.body.removeChild(l);
+      setTimeout(() => URL.revokeObjectURL(u), 3000);
     };
 
     // JSON 가져오기 (Import)
