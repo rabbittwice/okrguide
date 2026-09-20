@@ -565,83 +565,118 @@
     }
 
     .cal-grid {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 4px;
-    }
-
-    .cal-day {
-      aspect-ratio: 1;
-      border-radius: 6px;
-      border: 1px solid transparent;
-      padding: 4px 2px 2px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      cursor: pointer;
-      user-select: none;
-      font-size: 12px;
-      position: relative;
-      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+      border: 1px solid var(--l);
+      border-radius: 8px;
+      overflow: hidden;
+      background: var(--bg);
     }
 
-    .cal-day:hover {
+    .cal-week {
+      display: flex;
+      flex-direction: column;
+      padding: 3px 0 4px;
+      border-bottom: 1px solid var(--l);
+      min-height: 48px;
+    }
+
+    .cal-week:last-child {
+      border-bottom: none;
+    }
+
+    .cal-week-days {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+    }
+
+    .cal-day-cell {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      padding: 1px 0;
+      border-radius: 4px;
+      user-select: none;
+      transition: background 0.12s;
+    }
+
+    .cal-day-cell:hover {
       background: var(--soft);
     }
 
-    .cal-day.other-month {
+    .cal-day-cell.other-month {
       opacity: 0.35;
     }
 
-    .cal-day.today .cal-day-num {
+    .cal-day-cell.today .cal-day-num {
       background: var(--b);
       color: #fff;
-      border-radius: 50%;
       font-weight: bold;
     }
 
-    .cal-day.selected {
-      border-color: var(--b);
+    .cal-day-cell.selected {
       background: var(--soft);
+      box-shadow: inset 0 0 0 1.5px var(--b);
       font-weight: bold;
     }
 
-    .cal-day.in-hover-range {
+    .cal-day-cell.in-hover-range {
       background: var(--soft);
-      border-color: var(--b);
     }
 
     .cal-day-num {
-      line-height: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-size: 11px;
       width: 20px;
       height: 20px;
-    }
-
-    .cal-day-dots {
       display: flex;
-      gap: 2px;
-      margin-top: 3px;
-      min-height: 5px;
       align-items: center;
       justify-content: center;
-    }
-
-    .cal-dot {
-      width: 5px;
-      height: 5px;
       border-radius: 50%;
+      line-height: 1;
     }
 
-    .cal-dot.active {
+    .cal-bars-track {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      row-gap: 2px;
+      margin-top: 3px;
+      min-height: 4px;
+    }
+
+    .cal-bar {
+      height: 18px;
+      font-size: 10px;
+      font-weight: 500;
+      line-height: 18px;
+      padding: 0 5px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #fff;
+      cursor: pointer;
+      transition: transform 0.1s, box-shadow 0.15s, opacity 0.15s;
+      z-index: 2;
+      user-select: none;
+    }
+
+    .cal-bar.active {
       background: var(--b);
     }
 
-    .cal-dot.done {
+    .cal-bar.done {
       background: #34a853;
+    }
+
+    .cal-bar:hover {
+      filter: brightness(1.1);
+      transform: translateY(-0.5px);
+    }
+
+    .cal-bar.highlighted-bar {
+      box-shadow: 0 0 0 2px var(--c), 0 0 0 3.5px var(--b);
+      z-index: 10;
+      transform: scaleY(1.08);
     }
 
     .cal-selected-info {
@@ -1018,79 +1053,147 @@
       let prevLastDate = new Date(year, month, 0).getDate();
       let todayStr = new Date().toLocaleDateString('sv');
 
-      let hoveredGoal = hoveredOkrId ? allGoals.find(x => String(x.id) === String(hoveredOkrId)) : null;
-      let html = '';
-
       const toDateStr = (y, m, d) => `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+
+      // 전체 날짜 배열 구성
+      let allMonthDays = [];
 
       // 이전 달 날짜 채우기
       for (let x = firstDayIndex; x > 0; x--) {
         let d = prevLastDate - x + 1;
         let prevM = month === 0 ? 11 : month - 1;
         let prevY = month === 0 ? year - 1 : year;
-        let dateStr = toDateStr(prevY, prevM, d);
-        html += renderDayCell(dateStr, d, true, todayStr, allGoals, hoveredGoal);
+        allMonthDays.push({
+          dateStr: toDateStr(prevY, prevM, d),
+          dayNum: d,
+          isOtherMonth: true
+        });
       }
 
       // 이번 달 날짜 채우기
       for (let d = 1; d <= lastDate; d++) {
-        let dateStr = toDateStr(year, month, d);
-        html += renderDayCell(dateStr, d, false, todayStr, allGoals, hoveredGoal);
+        allMonthDays.push({
+          dateStr: toDateStr(year, month, d),
+          dayNum: d,
+          isOtherMonth: false
+        });
       }
 
       // 다음 달 날짜 채우기 (35 또는 42 그리드 유지)
-      let totalCells = firstDayIndex + lastDate;
+      let totalCells = allMonthDays.length;
       let targetTotal = totalCells <= 35 ? 35 : 42;
       let nextCount = targetTotal - totalCells;
       for (let d = 1; d <= nextCount; d++) {
         let nextM = month === 11 ? 0 : month + 1;
         let nextY = month === 11 ? year + 1 : year;
-        let dateStr = toDateStr(nextY, nextM, d);
-        html += renderDayCell(dateStr, d, true, todayStr, allGoals, hoveredGoal);
+        allMonthDays.push({
+          dateStr: toDateStr(nextY, nextM, d),
+          dayNum: d,
+          isOtherMonth: true
+        });
       }
+
+      // 7일씩 주(Week) 단위로 분할
+      let weeks = [];
+      for (let i = 0; i < allMonthDays.length; i += 7) {
+        weeks.push(allMonthDays.slice(i, i + 7));
+      }
+
+      let hoveredGoal = hoveredOkrId ? allGoals.find(x => String(x.id) === String(hoveredOkrId)) : null;
+
+      let html = weeks.map(week => {
+        let weekDates = week.map(item => item.dateStr);
+        let weekStart = weekDates[0];
+        let weekEnd = weekDates[6];
+
+        // 1. 해당 주의 7개 날짜 헤더 렌더링
+        let daysHeaderHtml = week.map(item => {
+          let isToday = item.dateStr === todayStr;
+          let isSelected = item.dateStr === selectedDate;
+          let inHover = hoveredGoal && isGoalOnDate(hoveredGoal, item.dateStr);
+
+          let classes = ['cal-day-cell'];
+          if (item.isOtherMonth) classes.push('other-month');
+          if (isToday) classes.push('today');
+          if (isSelected) classes.push('selected');
+          if (inHover) classes.push('in-hover-range');
+
+          return `
+            <div class="${classes.join(' ')}" data-date="${item.dateStr}">
+              <span class="cal-day-num">${item.dayNum}</span>
+            </div>
+          `;
+        }).join('');
+
+        // 2. 해당 주에 걸치는 OKR 필터링 및 바 슬롯 계산
+        let weekGoals = allGoals.filter(g => {
+          if (!g.startDate || !g.endDate) return false;
+          let s = g.startDate <= g.endDate ? g.startDate : g.endDate;
+          let e = g.startDate <= g.endDate ? g.endDate : g.startDate;
+          return s <= weekEnd && e >= weekStart;
+        });
+
+        // 정렬: 시작일 오름차순, 기간 긴 것 우선
+        weekGoals.sort((a, b) => {
+          let aS = a.startDate <= a.endDate ? a.startDate : a.endDate;
+          let bS = b.startDate <= b.endDate ? b.startDate : b.endDate;
+          let aE = a.startDate <= a.endDate ? a.endDate : a.startDate;
+          let bE = b.startDate <= b.endDate ? b.endDate : b.startDate;
+          if (aS !== bS) return aS.localeCompare(bS);
+          return bE.localeCompare(aE);
+        });
+
+        // 겹치지 않게 수직 슬롯(행) 배정
+        let slots = [];
+        let goalSlots = [];
+
+        weekGoals.forEach(g => {
+          let s = g.startDate <= g.endDate ? g.startDate : g.endDate;
+          let e = g.startDate <= g.endDate ? g.endDate : g.startDate;
+
+          let startCol = s <= weekStart ? 1 : (weekDates.indexOf(s) + 1);
+          let endCol = e >= weekEnd ? 7 : (weekDates.indexOf(e) + 1);
+          let isStart = (s >= weekStart);
+          let isEnd = (e <= weekEnd);
+
+          let slot = 0;
+          while (slots[slot] && slots[slot].some(occ => !(endCol < occ.startCol || startCol > occ.endCol))) {
+            slot++;
+          }
+          slots[slot] ??= [];
+          slots[slot].push({ startCol, endCol });
+          goalSlots.push({ goal: g, startCol, endCol, isStart, isEnd, slot: slot + 1 });
+        });
+
+        // 바 렌더링
+        let barsHtml = goalSlots.map(({ goal, startCol, endCol, isStart, isEnd, slot }) => {
+          let isDone = done(goal);
+          let isHovered = hoveredOkrId && String(goal.id) === String(hoveredOkrId);
+          let radius = `${isStart ? '4px' : '0'} ${isEnd ? '4px' : '0'} ${isEnd ? '4px' : '0'} ${isStart ? '4px' : '0'}`;
+          let marginL = isStart ? '2px' : '0';
+          let marginR = isEnd ? '2px' : '0';
+
+          return `
+            <div class="cal-bar ${isDone ? 'done' : 'active'} ${isHovered ? 'highlighted-bar' : ''}"
+                 style="grid-column: ${startCol} / ${endCol + 1}; grid-row: ${slot}; border-radius: ${radius}; margin-left: ${marginL}; margin-right: ${marginR};"
+                 data-id="${goal.id}"
+                 data-date="${goal.startDate}"
+                 title="${esc(goal.objective)} (${goal.startDate} ~ ${goal.endDate})">
+              ${esc(goal.objective)}
+            </div>
+          `;
+        }).join('');
+
+        return `
+          <div class="cal-week">
+            <div class="cal-week-days">${daysHeaderHtml}</div>
+            <div class="cal-bars-track">${barsHtml}</div>
+          </div>
+        `;
+      }).join('');
 
       $('#cal-grid').innerHTML = html;
       renderSelectedDateEvents();
-    }
-
-    function renderDayCell(dateStr, dayNum, isOtherMonth, todayStr, allGoals, hoveredGoal) {
-      let isToday = dateStr === todayStr;
-      let isSelected = dateStr === selectedDate;
-
-      let goalsOnDay = allGoals.filter(g => isGoalOnDate(g, dateStr));
-      let hasEvents = goalsOnDay.length > 0;
-
-      let inHoverRange = false;
-      if (hoveredGoal && isGoalOnDate(hoveredGoal, dateStr)) {
-        inHoverRange = true;
-      }
-
-      let dotsHtml = '';
-      if (hasEvents) {
-        let activeCount = goalsOnDay.filter(g => !done(g)).length;
-        let doneCount = goalsOnDay.filter(g => done(g)).length;
-
-        let dots = [];
-        if (activeCount > 0) dots.push('<span class="cal-dot active"></span>');
-        if (doneCount > 0) dots.push('<span class="cal-dot done"></span>');
-        if (goalsOnDay.length > 2 && dots.length < 3) dots.push('<span class="cal-dot active"></span>');
-
-        dotsHtml = `<div class="cal-day-dots">${dots.join('')}</div>`;
-      }
-
-      let classes = ['cal-day'];
-      if (isOtherMonth) classes.push('other-month');
-      if (isToday) classes.push('today');
-      if (isSelected) classes.push('selected');
-      if (hasEvents) classes.push('has-events');
-      if (inHoverRange) classes.push('in-hover-range');
-
-      return `
-        <div class="${classes.join(' ')}" data-date="${dateStr}" title="${goalsOnDay.length ? goalsOnDay.length + (lang === 'ko' ? '개의 목표' : ' OKRs') : ''}">
-          <span class="cal-day-num">${dayNum}</span>
-          ${dotsHtml}
-        </div>
-      `;
     }
 
     function renderSelectedDateEvents() {
@@ -1142,12 +1245,21 @@
     function updateCalendarHover() {
       let allGoals = get();
       let hoveredGoal = hoveredOkrId ? allGoals.find(x => String(x.id) === String(hoveredOkrId)) : null;
-      document.querySelectorAll('.cal-day').forEach(cell => {
+
+      document.querySelectorAll('.cal-day-cell').forEach(cell => {
         let dateStr = cell.dataset.date;
         if (hoveredGoal && isGoalOnDate(hoveredGoal, dateStr)) {
           cell.classList.add('in-hover-range');
         } else {
           cell.classList.remove('in-hover-range');
+        }
+      });
+
+      document.querySelectorAll('.cal-bar').forEach(bar => {
+        if (hoveredOkrId && String(bar.dataset.id) === String(hoveredOkrId)) {
+          bar.classList.add('highlighted-bar');
+        } else {
+          bar.classList.remove('highlighted-bar');
         }
       });
     }
@@ -1462,7 +1574,37 @@
     };
 
     $('#cal-grid').onclick = e => {
-      let cell = e.target.closest('.cal-day');
+      // 1. 바 클릭 시 해당 OKR 카드로 이동 및 날짜 선택
+      let bar = e.target.closest('.cal-bar');
+      if (bar && bar.dataset.id) {
+        let id = bar.dataset.id;
+        let card = document.querySelector(`.card[data-id="${id}"]`);
+        if (!card) {
+          filter = 'all';
+          document.querySelectorAll('.filter').forEach(x => x.classList.toggle('on', x.dataset.f === 'all'));
+          render();
+          card = document.querySelector(`.card[data-id="${id}"]`);
+        }
+        if (card) {
+          card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          card.classList.remove('highlighted');
+          void card.offsetWidth;
+          card.classList.add('highlighted');
+          setTimeout(() => card.classList.remove('highlighted'), 1500);
+        }
+        if (bar.dataset.date) {
+          selectedDate = bar.dataset.date;
+          let [y, m] = selectedDate.split('-').map(Number);
+          if (calDate.getFullYear() !== y || calDate.getMonth() !== m - 1) {
+            calDate = new Date(y, m - 1, 1);
+          }
+          renderCalendar();
+        }
+        return;
+      }
+
+      // 2. 날짜 셀 클릭 시 날짜 선택
+      let cell = e.target.closest('.cal-day-cell');
       if (!cell || !cell.dataset.date) return;
       selectedDate = cell.dataset.date;
       let [y, m] = selectedDate.split('-').map(Number);
