@@ -3,7 +3,51 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>OKR Planner</title>
+  <title>OKR Planner - 실시간 달력 연동 무료 목표 관리 & OKR 플래너</title>
+  <meta name="description" content="명확한 목표(Objective)와 3가지 핵심 결과(Key Results)로 실행력을 극대화하세요. 실시간 캘린더 타임라인 바 연동, 고해상도 배경화면 생성, 100% 로컬 저장으로 안전한 무료 웹 기반 OKR 플래너.">
+  <meta name="keywords" content="OKR, OKR 플래너, 목표 관리, 목표 설정, Key Results, 달력 연동, 생산성 도구, 개인정보 보호, 무료 플래너, 동기 부여, 타임라인">
+  <meta name="author" content="OKR Planner">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#1a73e8">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="OKR Planner - 실시간 달력 연동 무료 목표 관리 & OKR 플래너">
+  <meta property="og:description" content="명확한 목표(Objective)와 3가지 핵심 결과(Key Results)로 실행력을 극대화하세요. 실시간 캘린더 바 연동 및 100% 로컬 저장 무료 플래너.">
+  <meta property="og:site_name" content="OKR Planner">
+  <meta property="og:locale" content="ko_KR">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="OKR Planner - 실시간 달력 연동 무료 목표 관리 & OKR 플래너">
+  <meta name="twitter:description" content="명확한 목표(Objective)와 3가지 핵심 결과(Key Results)로 실행력을 극대화하세요. 실시간 캘린더 바 연동 및 100% 로컬 저장 무료 플래너.">
+
+  <!-- JSON-LD Structured Data for Google Search -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "OKR Planner",
+    "applicationCategory": "ProductivityApplication",
+    "operatingSystem": "All",
+    "browserRequirements": "Requires JavaScript. Requires HTML5.",
+    "description": "실시간 캘린더 바 연동, 모바일 배경화면 생성, 100% 로컬 스토리지 저장을 지원하는 무료 OKR 목표 관리 웹 애플리케이션입니다.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "KRW"
+    },
+    "featureList": [
+      "실시간 캘린더 바(Bar) 연동 및 일정 시각화",
+      "목표(Objective) 및 3가지 세부 핵심 결과(Key Results) 체계적 관리",
+      "Key Result 원클릭 완료 및 실시간 응원 토스트 알림",
+      "고해상도 스마트폰/PC 배경화면 PNG 다운로드",
+      "JSON 백업 내보내기 및 덮어씌우기/추가하기 가져오기",
+      "서버 전송 없는 100% 로컬 브라우저 저장",
+      "다크 모드 및 다국어 지원"
+    ]
+  }
+  </script>
   <style>
     :root {
       --b: #1a73e8;
@@ -808,6 +852,160 @@
       animation: cardPulse 1.2s ease-out;
       border-color: var(--b) !important;
     }
+
+    /* 정보 섹션 및 푸터 스타일 (SEO & 애드센스 최적화) */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    .info-section {
+      margin-top: 56px;
+      padding-top: 36px;
+      border-top: 1px solid var(--l);
+    }
+
+    .info-section h2 {
+      font-size: 22px;
+      margin: 0 0 16px;
+      color: var(--i);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .info-section p {
+      color: var(--s);
+      line-height: 1.7;
+      margin: 0 0 14px;
+      font-size: 14.5px;
+    }
+
+    .guide-grid,
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .guide-card,
+    .faq-card {
+      background: var(--c);
+      border: 1px solid var(--l);
+      border-radius: 8px;
+      padding: 18px;
+      transition: border-color 0.15s, transform 0.1s;
+    }
+
+    .guide-card:hover,
+    .faq-card:hover {
+      border-color: var(--b);
+    }
+
+    .guide-card h3,
+    .faq-card h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      color: var(--i);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .guide-card p,
+    .faq-card p {
+      margin: 0;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--s);
+    }
+
+    footer {
+      margin-top: 60px;
+      background: var(--c);
+      border-top: 1px solid var(--l);
+      padding: 40px 0 30px;
+    }
+
+    .foot-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--l);
+    }
+
+    .foot-brand p {
+      color: var(--s);
+      margin: 8px 0 0;
+      font-size: 13px;
+      max-width: 440px;
+      line-height: 1.6;
+    }
+
+    .foot-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .foot-links a,
+    .link-btn {
+      color: var(--s);
+      text-decoration: none;
+      font-size: 13px;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      font-family: inherit;
+      transition: color 0.15s;
+    }
+
+    .foot-links a:hover,
+    .link-btn:hover {
+      color: var(--b);
+      text-decoration: underline;
+    }
+
+    .foot-copy {
+      padding-top: 20px;
+      font-size: 12px;
+      color: var(--s);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .privacy-body {
+      font-size: 13px;
+      line-height: 1.7;
+      color: var(--i);
+      max-height: 70vh;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+
+    .privacy-body h3 {
+      font-size: 15px;
+      margin: 18px 0 6px;
+      color: var(--b);
+    }
+
+    .privacy-body p,
+    .privacy-body ul {
+      margin: 0 0 10px;
+      color: var(--s);
+    }
+
+    .privacy-body ul {
+      padding-left: 20px;
+    }
   </style>
 </head>
 <body>
@@ -872,7 +1070,166 @@
     </div>
 
     <p class="notice" id="notice">모든 데이터는 현재 사용 중인 기기에 저장되며, JSON 파일로 다른 기기에 옮길 수 있습니다.</p>
+
+    <!-- 서비스 소개 및 OKR 가이드 (SEO & 애드센스 콘텐츠) -->
+    <section class="info-section" id="about-section">
+      <h2 id="about-title">📖 OKR이란 무엇인가요? (OKR 가이드)</h2>
+      <p id="about-desc1">
+        <strong>OKR(Objectives and Key Results)</strong>은 인텔(Intel)에서 처음 고안되어 구글(Google), 링크드인(LinkedIn), 넷플릭스(Netflix) 등 세계적인 혁신 기업들의 폭발적인 성장을 이끈 목표 관리 및 실행 프레임워크입니다. 조직뿐만 아니라 개인의 삶과 커리어 성장에서도 강력한 집중력과 실행력을 발휘할 수 있도록 돕습니다.
+      </p>
+      <div class="guide-grid">
+        <div class="guide-card">
+          <h3 id="card-obj-title">🎯 Objective (목표)</h3>
+          <p id="card-obj-desc">"무엇을 달성하고 싶은가?"에 대한 답입니다. 단순한 할 일 목록이 아니라, 가슴 뛰고 도전적이며 명확한 방향성을 제시하는 정성적 목표를 설정합니다.</p>
+        </div>
+        <div class="guide-card">
+          <h3 id="card-kr-title">📊 Key Results (핵심 결과 3가지)</h3>
+          <p id="card-kr-desc">"목표를 달성했는지 어떻게 알 수 있는가?"에 대한 답입니다. 3가지 구체적이고 측정 가능한 지표(숫자 또는 명확한 완료 여부)로 진행 상황을 추적합니다.</p>
+        </div>
+        <div class="guide-card">
+          <h3 id="card-why-title">💡 Why & Motivation (동기 부여)</h3>
+          <p id="card-why-desc">"이 목표를 왜 이루고자 하는가?"를 항상 되새깁니다. 슬럼프가 오거나 장애물을 마주했을 때 끝까지 추진할 수 있는 근원적인 에너지가 됩니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 주요 기능 소개 -->
+    <section class="info-section" id="features-section">
+      <h2 id="feat-title">✨ OKR Planner의 핵심 기능</h2>
+      <div class="guide-grid">
+        <div class="guide-card">
+          <h3 id="feat1-title">📅 실시간 캘린더 타임라인 바</h3>
+          <p id="feat1-desc">각 목표의 시작일과 종료일이 달력에 연속된 컬러 바로 직관적으로 연결되어, 다가오는 마감일과 일정 진행 상황을 한눈에 파악할 수 있습니다.</p>
+        </div>
+        <div class="guide-card">
+          <h3 id="feat2-title">🎉 원클릭 KR 달성 및 응원 알림</h3>
+          <p id="feat2-desc">세부 목표(Key Result)를 완료할 때마다 실시간 응원 메시지가 팝업되어 성취감을 높여주며, 3가지 KR을 모두 달성하면 완료 뱃지가 부여됩니다.</p>
+        </div>
+        <div class="guide-card">
+          <h3 id="feat3-title">🖼️ 맞춤형 모바일/PC 배경화면 생성</h3>
+          <p id="feat3-desc">원하는 OKR을 선택하면 고해상도 PNG 배경화면으로 즉시 제작됩니다. 스마트폰 잠금화면이나 데스크톱 배경으로 설정하여 매일 목표를 상기하세요.</p>
+        </div>
+        <div class="guide-card">
+          <h3 id="feat4-title">🔒 100% 로컬 보안 & JSON 백업</h3>
+          <p id="feat4-desc">모든 데이터는 오직 사용자의 기기 브라우저(Local Storage)에만 보관됩니다. 외부 서버 유출 걱정이 없으며, JSON 파일로 언제든 백업 및 이전이 가능합니다.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 자주 묻는 질문 (FAQ) -->
+    <section class="info-section" id="faq-section">
+      <h2 id="faq-title">❓ 자주 묻는 질문 (FAQ)</h2>
+      <div class="faq-grid">
+        <div class="faq-card">
+          <h3 id="faq1-q">Q. 서비스 이용료나 회원가입이 필요한가요?</h3>
+          <p id="faq1-a">A. 아니요! OKR Planner는 별도의 회원가입이나 로그인 절차 없이 누구나 브라우저에서 100% 무료로 즉시 사용할 수 있습니다.</p>
+        </div>
+        <div class="faq-card">
+          <h3 id="faq2-q">Q. 입력한 데이터는 안전하게 보관되나요?</h3>
+          <p id="faq2-a">A. 네, 입력하신 모든 목표 데이터는 사용 중인 기기의 브라우저 로컬 저장소에만 암호화 보관되며, 어떠한 외부 서버로도 전송되지 않아 완벽한 프라이버시가 보장됩니다.</p>
+        </div>
+        <div class="faq-card">
+          <h3 id="faq3-q">Q. 스마트폰이나 다른 PC로 데이터를 옮기려면 어떻게 하나요?</h3>
+          <p id="faq3-a">A. 상단의 [⤓ 내보내기] 버튼을 눌러 JSON 백업 파일을 다운로드한 후, 다른 기기에서 [⤒ 가져오기]를 실행하면 기존 데이터를 유지하면서 추가하거나 덮어씌울 수 있습니다.</p>
+        </div>
+        <div class="faq-card">
+          <h3 id="faq4-q">Q. 효과적인 Key Result 작성 팁이 있을까요?</h3>
+          <p id="faq4-a">A. 모호한 행동보다는 "책 3권 완독", "매출 20% 증가", "주 3회 5km 달리기"처럼 결과가 명확히 측정 가능하고 70~80% 수준의 도전적인 수치로 작성하는 것을 추천합니다.</p>
+        </div>
+      </div>
+    </section>
   </main>
+
+  <!-- 푸터 (Footer) -->
+  <footer>
+    <div class="wrap foot-content">
+      <div class="foot-brand">
+        <div class="brand"><b>✓</b>OKR Planner</div>
+        <p id="foot-desc">명확한 목표 수립과 실천을 돕는 무료 웹 기반 OKR 플래너 도구입니다. 모든 데이터는 사용자의 기기에 안전하게 보관됩니다.</p>
+      </div>
+      <div class="foot-links">
+        <a href="#about-section" id="fl-about">서비스 소개</a>
+        <a href="#features-section" id="fl-feat">주요 기능</a>
+        <a href="#faq-section" id="fl-faq">자주 묻는 질문</a>
+        <button class="link-btn" id="open-privacy" type="button">개인정보처리방침</button>
+        <button class="link-btn" id="open-terms" type="button">이용약관</button>
+      </div>
+    </div>
+    <div class="wrap foot-copy">
+      <span id="foot-copy-text">© 2026 OKR Planner. All rights reserved.</span>
+      <span id="foot-contact">문의: <a href="mailto:support@okrplanner.app" style="color:inherit">support@okrplanner.app</a></span>
+    </div>
+  </footer>
+
+  <!-- 개인정보처리방침 모달 -->
+  <div class="back" id="privacy-modal">
+    <div class="modal" style="max-width:650px">
+      <h2 id="priv-title">개인정보처리방침 (Privacy Policy)</h2>
+      <div class="privacy-body">
+        <p><strong>시행일자: 2026년 1월 1일</strong></p>
+        <p>OKR Planner(이하 '서비스')는 이용자의 개인정보 및 프라이버시를 매우 소중하게 생각하며, 관련 법령을 준수합니다. 본 방침은 서비스가 이용자의 정보를 어떻게 다루는지 투명하게 설명합니다.</p>
+        
+        <h3>1. 수집하는 개인정보 항목 및 수집 방법</h3>
+        <p>서비스는 회원가입이나 로그인을 요구하지 않으며, 서버로 이용자의 어떠한 개인 식별 정보(이름, 이메일, 전화번호 등)도 수집하거나 전송하지 않습니다.</p>
+        <ul>
+          <li><strong>목표(OKR) 데이터:</strong> 사용자가 입력하는 목표, 핵심 결과, 동기, 일정 등은 전적으로 사용자의 웹 브라우저 로컬 저장소(LocalStorage)에만 저장됩니다.</li>
+        </ul>
+
+        <h3>2. 쿠키(Cookie) 및 웹 스토리지 사용 안내</h3>
+        <p>서비스는 이용자에게 최적화된 사용 환경을 제공하기 위해 브라우저의 웹 스토리지(LocalStorage)를 사용합니다.</p>
+        <ul>
+          <li><strong>저장 항목:</strong> OKR 목표 목록, 다크 모드/라이트 모드 설정값, 언어(한국어/영어) 설정값</li>
+          <li>이용자는 브라우저 설정을 통해 로컬 스토리지 및 쿠키 저장을 거부하거나 삭제할 수 있습니다.</li>
+        </ul>
+
+        <h3>3. 제3자 광고 사업자(Google AdSense) 관련 고지</h3>
+        <p>본 서비스는 향후 운영비 충당을 위해 Google AdSense 등 제3자 광고 사업자의 광고를 게재할 수 있습니다.</p>
+        <ul>
+          <li>Google을 포함한 제3자 광고 사업자는 사용자가 본 웹사이트 또는 다른 웹사이트를 방문한 기록을 바탕으로 광고를 게재하기 위해 쿠키(예: DoubleClick 쿠키)를 사용합니다.</li>
+          <li>사용자는 <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" style="color:var(--b)">Google 광고 설정</a>을 방문하여 맞춤형 광고 설정을 해제(Opt-out)할 수 있습니다.</li>
+        </ul>
+
+        <h3>4. 개인정보의 제3자 제공 및 위탁</h3>
+        <p>서비스는 이용자의 개인정보를 제3자에게 제공하거나 외부에 위탁하여 처리하지 않습니다.</p>
+
+        <h3>5. 이용자의 권리와 행사 방법</h3>
+        <p>이용자는 언제든지 브라우저 내 [Delete] 버튼 또는 브라우저 캐시 삭제를 통해 자신이 작성한 모든 데이터를 영구적으로 파기할 수 있으며, [내보내기] 기능을 통해 데이터를 백업할 수 있습니다.</p>
+
+        <h3>6. 개인정보 보호책임자 및 문의처</h3>
+        <p>서비스 이용 중 발생하는 개인정보 보호 관련 문의사항은 아래 연락처로 문의해 주시기 바랍니다.</p>
+        <p>이메일: <a href="mailto:support@okrplanner.app" style="color:var(--b)">support@okrplanner.app</a></p>
+      </div>
+      <div class="foot">
+        <button class="btn" data-close type="button">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 이용약관 모달 -->
+  <div class="back" id="terms-modal">
+    <div class="modal" style="max-width:650px">
+      <h2 id="terms-title">서비스 이용약관 (Terms of Service)</h2>
+      <div class="privacy-body">
+        <p><strong>시행일자: 2026년 1월 1일</strong></p>
+        <h3>제1조 (목적)</h3>
+        <p>본 약관은 OKR Planner(이하 '서비스')가 제공하는 웹 애플리케이션의 이용과 관련하여 서비스와 이용자의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.</p>
+        
+        <h3>제2조 (서비스의 제공 및 변경)</h3>
+        <p>1. 서비스는 개인의 목표 수립 및 관리, 달력 연동, 배경화면 생성 등의 기능을 무료로 제공합니다.<br>
+        2. 서비스는 기술적 사양의 변경이나 개선을 위해 서비스 내용을 변경할 수 있습니다.</p>
+
+        <h3>제3조 (이용자의 데이터 관리 및 책임)</h3>
+        <p>1. 서비스는 서버에 사용자의 목표 데이터를 저장하지 않고 브라우저에만 저장하므로, 기기 변경, 브라우저 캐시 삭제 등으로 인한 데이터 유실에 대해 책임지지 않습니다.<br>
+        2. 이용자는 중요한 데이터를 보관하기 위해 정기적으로 상단 [내보내기] 기능을 통해 JSON 백업을 권장합니다.</p>
+
+        <h3>제4조 (면책 조항)</h3>
+        <p>서비스는 무료로 제공되는 도구로서 천재지변, 불가항력적 오류, 브라우저 환경 차이로 인한 손해에 대해 책임을 지지 않습니다.</p>
+      </div>
+      <div class="foot">
+        <button class="btn" data-close type="button">확인</button>
+      </div>
+    </div>
+  </div>
 
   <!-- OKR 생성 / 수정 모달 -->
   <div class="back" id="edit">
@@ -1279,8 +1636,86 @@
       $('#imp-replace').textContent = T(18);
       $('#imp-append').textContent = T(19);
       document.querySelectorAll('.preset').forEach((b, i) => b.textContent = presetTx[lang][i]);
+
+      // SEO & 정보 섹션 다국어
+      if (lang === 'ko') {
+        $('#about-title').textContent = '📖 OKR이란 무엇인가요? (OKR 가이드)';
+        $('#about-desc1').innerHTML = '<strong>OKR(Objectives and Key Results)</strong>은 인텔(Intel)에서 처음 고안되어 구글(Google), 링크드인(LinkedIn), 넷플릭스(Netflix) 등 세계적인 혁신 기업들의 폭발적인 성장을 이끈 목표 관리 및 실행 프레임워크입니다. 조직뿐만 아니라 개인의 삶과 커리어 성장에서도 강력한 집중력과 실행력을 발휘할 수 있도록 돕습니다.';
+        $('#card-obj-title').textContent = '🎯 Objective (목표)';
+        $('#card-obj-desc').textContent = '"무엇을 달성하고 싶은가?"에 대한 답입니다. 단순한 할 일 목록이 아니라, 가슴 뛰고 도전적이며 명확한 방향성을 제시하는 정성적 목표를 설정합니다.';
+        $('#card-kr-title').textContent = '📊 Key Results (핵심 결과 3가지)';
+        $('#card-kr-desc').textContent = '"목표를 달성했는지 어떻게 알 수 있는가?"에 대한 답입니다. 3가지 구체적이고 측정 가능한 지표(숫자 또는 명확한 완료 여부)로 진행 상황을 추적합니다.';
+        $('#card-why-title').textContent = '💡 Why & Motivation (동기 부여)';
+        $('#card-why-desc').textContent = '"이 목표를 왜 이루고자 하는가?"를 항상 되새깁니다. 슬럼프가 오거나 장애물을 마주했을 때 끝까지 추진할 수 있는 근원적인 에너지가 됩니다.';
+        $('#feat-title').textContent = '✨ OKR Planner의 핵심 기능';
+        $('#feat1-title').textContent = '📅 실시간 캘린더 타임라인 바';
+        $('#feat1-desc').textContent = '각 목표의 시작일과 종료일이 달력에 연속된 컬러 바로 직관적으로 연결되어, 다가오는 마감일과 일정 진행 상황을 한눈에 파악할 수 있습니다.';
+        $('#feat2-title').textContent = '🎉 원클릭 KR 달성 및 응원 알림';
+        $('#feat2-desc').textContent = '세부 목표(Key Result)를 완료할 때마다 실시간 응원 메시지가 팝업되어 성취감을 높여주며, 3가지 KR을 모두 달성하면 완료 뱃지가 부여됩니다.';
+        $('#feat3-title').textContent = '🖼️ 맞춤형 모바일/PC 배경화면 생성';
+        $('#feat3-desc').textContent = '원하는 OKR을 선택하면 고해상도 PNG 배경화면으로 즉시 제작됩니다. 스마트폰 잠금화면이나 데스크톱 배경으로 설정하여 매일 목표를 상기하세요.';
+        $('#feat4-title').textContent = '🔒 100% 로컬 보안 & JSON 백업';
+        $('#feat4-desc').textContent = '모든 데이터는 오직 사용자의 기기 브라우저(Local Storage)에만 보관됩니다. 외부 서버 유출 걱정이 없으며, JSON 파일로 언제든 백업 및 이전이 가능합니다.';
+        $('#faq-title').textContent = '❓ 자주 묻는 질문 (FAQ)';
+        $('#faq1-q').textContent = 'Q. 서비스 이용료나 회원가입이 필요한가요?';
+        $('#faq1-a').textContent = 'A. 아니요! OKR Planner는 별도의 회원가입이나 로그인 절차 없이 누구나 브라우저에서 100% 무료로 즉시 사용할 수 있습니다.';
+        $('#faq2-q').textContent = 'Q. 입력한 데이터는 안전하게 보관되나요?';
+        $('#faq2-a').textContent = 'A. 네, 입력하신 모든 목표 데이터는 사용 중인 기기의 브라우저 로컬 저장소에만 암호화 보관되며, 어떠한 외부 서버로도 전송되지 않아 완벽한 프라이버시가 보장됩니다.';
+        $('#faq3-q').textContent = 'Q. 스마트폰이나 다른 PC로 데이터를 옮기려면 어떻게 하나요?';
+        $('#faq3-a').textContent = 'A. 상단의 [⤓ 내보내기] 버튼을 눌러 JSON 백업 파일을 다운로드한 후, 다른 기기에서 [⤒ 가져오기]를 실행하면 기존 데이터를 유지하면서 추가하거나 덮어씌울 수 있습니다.';
+        $('#faq4-q').textContent = 'Q. 효과적인 Key Result 작성 팁이 있을까요?';
+        $('#faq4-a').textContent = 'A. 모호한 행동보다는 "책 3권 완독", "매출 20% 증가", "주 3회 5km 달리기"처럼 결과가 명확히 측정 가능하고 70~80% 수준의 도전적인 수치로 작성하는 것을 추천합니다.';
+        $('#foot-desc').textContent = '명확한 목표 수립과 실천을 돕는 무료 웹 기반 OKR 플래너 도구입니다. 모든 데이터는 사용자의 기기에 안전하게 보관됩니다.';
+        $('#fl-about').textContent = '서비스 소개';
+        $('#fl-feat').textContent = '주요 기능';
+        $('#fl-faq').textContent = '자주 묻는 질문';
+        $('#open-privacy').textContent = '개인정보처리방침';
+        $('#open-terms').textContent = '이용약관';
+        $('#priv-title').textContent = '개인정보처리방침 (Privacy Policy)';
+        $('#terms-title').textContent = '서비스 이용약관 (Terms of Service)';
+      } else {
+        $('#about-title').textContent = '📖 What is OKR? (OKR Guide)';
+        $('#about-desc1').innerHTML = '<strong>OKR (Objectives and Key Results)</strong> is a proven goal-setting and execution framework conceived at Intel and popularized by industry leaders like Google, LinkedIn, and Netflix to drive explosive growth and alignment.';
+        $('#card-obj-title').textContent = '🎯 Objective';
+        $('#card-obj-desc').textContent = 'Answers "What do I want to achieve?" Sets inspiring, ambitious, and qualitative direction rather than an ordinary to-do list.';
+        $('#card-kr-title').textContent = '📊 Key Results (3 Metrics)';
+        $('#card-kr-desc').textContent = 'Answers "How do I know I am getting there?" Measures progress with 3 quantitative milestones and concrete deliverables.';
+        $('#card-why-title').textContent = '💡 Why & Motivation';
+        $('#card-why-desc').textContent = 'Reminds you why this goal matters, giving you the stamina and purpose to overcome obstacles.';
+        $('#feat-title').textContent = '✨ Key Features of OKR Planner';
+        $('#feat1-title').textContent = '📅 Real-Time Calendar Timeline Bars';
+        $('#feat1-desc').textContent = 'Goal start and end dates are intuitively displayed as continuous timeline bars to keep upcoming milestones visible at a glance.';
+        $('#feat2-title').textContent = '🎉 One-Click KR Done & Cheering Toast';
+        $('#feat2-desc').textContent = 'Motivational toast notifications celebrate each Key Result completed, and a DONE badge marks full achievement.';
+        $('#feat3-title').textContent = '🖼️ Custom Mobile & PC Wallpapers';
+        $('#feat3-desc').textContent = 'Turn your selected OKRs into high-resolution PNG lock screen wallpapers so your priorities stay top-of-mind every day.';
+        $('#feat4-title').textContent = '🔒 100% Local Privacy & JSON Backup';
+        $('#feat4-desc').textContent = 'All data resides solely in your browser (LocalStorage) with zero server transmission. Easily export or import via JSON.';
+        $('#faq-title').textContent = '❓ Frequently Asked Questions (FAQ)';
+        $('#faq1-q').textContent = 'Q. Is there any fee or account required?';
+        $('#faq1-a').textContent = 'A. No! OKR Planner is 100% free with no sign-up or login required.';
+        $('#faq2-q').textContent = 'Q. Is my data kept private and secure?';
+        $('#faq2-a').textContent = 'A. Yes! All data is stored strictly in your local browser storage and is never uploaded to any remote server.';
+        $('#faq3-q').textContent = 'Q. How do I transfer data to another device?';
+        $('#faq3-a').textContent = 'A. Click [⤓ Export] to download a JSON file, then use [⤒ Import] on your other device to append or overwrite.';
+        $('#faq4-q').textContent = 'Q. Any tips for writing great Key Results?';
+        $('#faq4-a').textContent = 'A. Use measurable numbers (e.g. "Read 3 books", "Boost revenue 20%") and aim for 70-80% stretch targets.';
+        $('#foot-desc').textContent = 'Free web-based OKR Planner to establish and achieve clear goals. All data is kept securely on your device.';
+        $('#fl-about').textContent = 'About';
+        $('#fl-feat').textContent = 'Features';
+        $('#fl-faq').textContent = 'FAQ';
+        $('#open-privacy').textContent = 'Privacy Policy';
+        $('#open-terms').textContent = 'Terms of Service';
+        $('#priv-title').textContent = 'Privacy Policy';
+        $('#terms-title').textContent = 'Terms of Service';
+      }
+
       render();
     }
+
+    // 개인정보처리방침 및 이용약관 모달 열기
+    $('#open-privacy').onclick = () => $('#privacy-modal').classList.add('open');
+    $('#open-terms').onclick = () => $('#terms-modal').classList.add('open');
 
     function render() {
       let a = get().filter(g => filter === 'all' || !done(g));
