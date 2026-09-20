@@ -442,6 +442,41 @@
         padding: 17px;
       }
     }
+
+    .toast {
+      position: fixed;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #202124;
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 15px;
+      font-weight: 500;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+      z-index: 100;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+      max-width: calc(100% - 40px);
+      text-align: center;
+    }
+
+    html[data-theme="dark"] .toast {
+      background: #e8eaed;
+      color: #202124;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
   </style>
 </head>
 <body>
@@ -549,7 +584,8 @@
         </div>
       </div>
     </div>
-  </div>
+  <!-- 응원 메시지 토스트 -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
   <script>
     const $ = s => document.querySelector(s);
@@ -746,6 +782,40 @@
       render();
     };
 
+    // 응원 메시지 토스트 표시
+    let toastTimer = null;
+    function showCheer(remaining) {
+      let toast = $('#toast');
+      if (!toast) return;
+
+      let msg = '';
+      if (lang === 'ko') {
+        if (remaining === 0) {
+          msg = '🎉 모든 세부 목표를 완료했어요! 정말 대단해요!';
+        } else if (remaining === 1) {
+          msg = '💪 1개 남았어요. 거의 다 왔어요! 대단해요!';
+        } else {
+          msg = `👏 ${remaining}개 남았어요. 대단해요!`;
+        }
+      } else {
+        if (remaining === 0) {
+          msg = '🎉 All Key Results completed! Amazing job!';
+        } else if (remaining === 1) {
+          msg = '💪 1 left. Almost there! Great job!';
+        } else {
+          msg = `👏 ${remaining} left. Great job!`;
+        }
+      }
+
+      toast.textContent = msg;
+      toast.classList.add('show');
+
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+
     // 목표 목록 클릭 이벤트 (KR 완료 토글, 메뉴, 수정, 복제, 삭제)
     $('#list').onclick = e => {
       // 1. Key Result div 클릭 시 완료/미완료 토글
@@ -756,9 +826,15 @@
         let g = a.find(x => String(x.id) === id);
         if (g) {
           g.done ??= [];
-          g.done[n] = !g.done[n];
+          let isNowDone = !g.done[n];
+          g.done[n] = isNowDone;
           put(a);
           render();
+
+          if (isNowDone) {
+            let remaining = 3 - g.done.filter(Boolean).length;
+            showCheer(remaining);
+          }
         }
         return;
       }
