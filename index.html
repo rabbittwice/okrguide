@@ -145,6 +145,22 @@
       border-color: var(--b);
     }
 
+    .btn-danger {
+      background: #d93025;
+      border-color: #d93025;
+      color: #fff;
+    }
+
+    .btn-danger:hover {
+      background: #b3261e;
+      border-color: #b3261e;
+    }
+
+    .tool#reset-btn:hover {
+      border-color: #d93025;
+      color: #d93025;
+    }
+
     .tools,
     .filters {
       display: flex;
@@ -1039,6 +1055,7 @@
       <div class="tools">
         <button class="tool" id="exp">⤓ <span id="expt">내보내기</span></button>
         <button class="tool" id="imp">⤒ <span id="impt">가져오기</span></button>
+        <button class="tool" id="reset-btn">↺ <span id="resett">초기화</span></button>
         <input type="file" id="file" accept=".json" style="display:none">
         <button class="tool" id="wall">▣ Wallpaper</button>
         <button class="tool" id="lang">EN / 한</button>
@@ -1328,6 +1345,21 @@
     </div>
   </div>
 
+  <!-- OKR 목록 초기화 확인 모달 -->
+  <div class="back" id="reset-modal">
+    <div class="modal" style="max-width:420px">
+      <h2 id="resettit">목록 초기화</h2>
+      <p id="resetdesc" style="color:var(--s);margin:10px 0 20px;line-height:1.5">
+        등록된 모든 OKR 목표가 삭제됩니다. 계속 진행하시겠습니까?<br>
+        <small style="color:#d93025;font-size:12px;margin-top:6px;display:inline-block">* 삭제된 데이터는 복구할 수 없습니다.</small>
+      </p>
+      <div class="foot" style="justify-content:flex-end;gap:8px">
+        <button class="tool" data-close type="button">취소</button>
+        <button class="btn btn-danger" id="reset-confirm" type="button">초기화</button>
+      </div>
+    </div>
+  </div>
+
   <!-- 응원 메시지 토스트 -->
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
@@ -1358,7 +1390,12 @@
         '데이터 가져오기',
         '불러온 데이터를 기존 목록에 어떻게 반영할까요?',
         '덮어씌우기',
-        '＋ 추가하기'
+        '＋ 추가하기',
+        '초기화',
+        '목록 초기화',
+        '등록된 모든 OKR 목표가 삭제됩니다. 계속 진행하시겠습니까?<br><small style="color:#d93025;font-size:12px;margin-top:6px;display:inline-block">* 삭제된 데이터는 복구할 수 없습니다.</small>',
+        '초기화할 목표가 없습니다.',
+        '모든 OKR 목표가 초기화되었습니다.'
       ],
       en: [
         'Make goals clear. Keep action simple.',
@@ -1380,7 +1417,12 @@
         'Import Data',
         'How would you like to apply the imported data?',
         'Overwrite',
-        '＋ Append'
+        '＋ Append',
+        'Reset',
+        'Reset OKRs',
+        'All OKR goals will be permanently deleted. Do you want to proceed?<br><small style="color:#d93025;font-size:12px;margin-top:6px;display:inline-block">* Deleted data cannot be recovered.</small>',
+        'No OKRs to reset.',
+        'All OKR goals have been reset.'
       ]
     };
 
@@ -1659,6 +1701,10 @@
       $('#impdesc').textContent = T(17);
       $('#imp-replace').textContent = T(18);
       $('#imp-append').textContent = T(19);
+      $('#resett').textContent = T(20);
+      $('#resettit').textContent = T(21);
+      $('#resetdesc').innerHTML = T(22);
+      $('#reset-confirm').textContent = T(20);
       document.querySelectorAll('.preset').forEach((b, i) => b.textContent = presetTx[lang][i]);
 
       // SEO & 정보 섹션 다국어
@@ -1825,6 +1871,11 @@
     document.querySelectorAll('[data-close]').forEach(x => {
       x.onclick = () => x.closest('.back').classList.remove('open');
     });
+    document.querySelectorAll('.back').forEach(modal => {
+      modal.onclick = e => {
+        if (e.target === modal) modal.classList.remove('open');
+      };
+    });
 
     // 폼 저장
     $('#form').onsubmit = e => {
@@ -1852,12 +1903,24 @@
       render();
     };
 
-    // 응원 메시지 토스트 표시
+    // 토스트 메시지 표시
     let toastTimer = null;
-    function showCheer(remaining) {
+    function showToast(msg) {
       let toast = $('#toast');
       if (!toast) return;
+      toast.textContent = msg;
+      toast.classList.remove('show');
+      void toast.offsetWidth;
+      toast.classList.add('show');
 
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+
+    // 응원 메시지 토스트 표시
+    function showCheer(remaining) {
       let msg = '';
       if (lang === 'ko') {
         if (remaining === 0) {
@@ -1876,16 +1939,7 @@
           msg = `👏 ${remaining} left. Great job!`;
         }
       }
-
-      toast.textContent = msg;
-      toast.classList.remove('show');
-      void toast.offsetWidth;
-      toast.classList.add('show');
-
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        toast.classList.remove('show');
-      }, 2500);
+      showToast(msg);
     }
 
     // 목표 목록 클릭 이벤트 (KR 완료 토글, 메뉴, 수정, 복제, 삭제)
@@ -2279,6 +2333,23 @@
       render();
       $('#imp-modal').classList.remove('open');
       alert(lang === 'ko' ? '성공적으로 추가되었습니다.' : 'Data appended successfully.');
+    };
+
+    // OKR 목록 초기화 (Reset)
+    $('#reset-btn').onclick = () => {
+      let cur = get();
+      if (!cur.length) {
+        showToast(T(23));
+        return;
+      }
+      $('#reset-modal').classList.add('open');
+    };
+
+    $('#reset-confirm').onclick = () => {
+      put([]);
+      render();
+      $('#reset-modal').classList.remove('open');
+      showToast(T(24));
     };
 
     // 목표 기간 프리셋 버튼
