@@ -1976,9 +1976,22 @@
       let i = a.findIndex(x => String(x.id) === String(id));
       let g = a[i];
 
-      if (b.dataset.more) return $('#m' + id).classList.toggle('show');
-      if (b.dataset.edit) open(g);
-      if (b.dataset.copy) open(g, true);
+      if (b.dataset.more) {
+        let card = b.closest('.card');
+        let menu = card ? card.querySelector('.menu') : document.getElementById('m' + id);
+        let isOpen = menu ? menu.classList.contains('show') : false;
+        document.querySelectorAll('.menu.show').forEach(m => m.classList.remove('show'));
+        if (menu && !isOpen) menu.classList.add('show');
+        return;
+      }
+      if (b.dataset.edit) {
+        b.closest('.menu')?.classList.remove('show');
+        open(g);
+      }
+      if (b.dataset.copy) {
+        b.closest('.menu')?.classList.remove('show');
+        open(g, true);
+      }
       if (b.dataset.del) {
         a.splice(i, 1);
         put(a);
@@ -2313,9 +2326,28 @@
       r.readAsText(f);
     };
 
+    // 고유 정수 ID 생성 헬퍼
+    let idSeed = 0;
+    const genUniqueId = existSet => {
+      let newId;
+      do {
+        newId = Date.now() + Math.floor(Math.random() * 1000000) + (++idSeed);
+      } while (existSet && existSet.has(String(newId)));
+      return newId;
+    };
+
     // 가져오기: 덮어씌우기
     $('#imp-replace').onclick = () => {
-      put(tempImport);
+      let exist = new Set();
+      let cleanData = tempImport.map(item => {
+        let copy = { ...item };
+        if (!copy.id || exist.has(String(copy.id))) {
+          copy.id = genUniqueId(exist);
+        }
+        exist.add(String(copy.id));
+        return copy;
+      });
+      put(cleanData);
       render();
       $('#imp-modal').classList.remove('open');
       alert(lang === 'ko' ? '성공적으로 덮어씌웠습니다.' : 'Data replaced successfully.');
@@ -2326,8 +2358,12 @@
       let cur = get();
       let exist = new Set(cur.map(x => String(x.id)));
       tempImport.forEach(item => {
-        if (exist.has(String(item.id))) item.id = Date.now() + Math.random();
-        cur.push(item);
+        let copy = { ...item };
+        if (!copy.id || exist.has(String(copy.id))) {
+          copy.id = genUniqueId(exist);
+        }
+        exist.add(String(copy.id));
+        cur.push(copy);
       });
       put(cur);
       render();
@@ -2369,6 +2405,13 @@
 
         f.endDate.value = dt.toLocaleDateString('sv');
       };
+    });
+
+    // 카드 더보기 메뉴 바깥 클릭 시 닫기
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.more') && !e.target.closest('.menu')) {
+        document.querySelectorAll('.menu.show').forEach(m => m.classList.remove('show'));
+      }
     });
 
     // 초기 실행
